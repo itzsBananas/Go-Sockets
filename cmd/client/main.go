@@ -9,10 +9,10 @@ import (
 
 func main() {
 	conn, err := net.Dial("tcp", ":8080")
-	defer conn.Close()
 	if err != nil {
 		log.Fatalf("Client cannot initialize: %s", err)
 	}
+	defer conn.Close()
 
 	scanner := bufio.NewScanner(os.Stdin)
 
