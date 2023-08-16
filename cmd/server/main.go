@@ -30,6 +30,7 @@ func main() {
 		case conn := <-leave:
 			delete(users, conn)
 		case msg := <-chat:
+			log.Println(msg.data)
 			for conn := range users {
 				if msg.src != conn {
 					go sendMessage(conn, []byte(msg.data))
@@ -57,6 +58,8 @@ func handleConnection(conn net.Conn) {
 		src: conn,
 	}
 	enter <- conn
+	msg.data = fmt.Sprintf("%s has entered the chat", name)
+	chat <- msg
 
 	scanner := bufio.NewScanner(conn)
 	for scanner.Scan() {
@@ -66,6 +69,10 @@ func handleConnection(conn net.Conn) {
 		msg.data = fmt.Sprintf("%s: %s", name, scanner.Text())
 		chat <- msg
 	}
+
+	leave <- conn
+	msg.data = fmt.Sprintf("%s has left the chat", name)
+	chat <- msg
 	conn.Close()
 }
 
