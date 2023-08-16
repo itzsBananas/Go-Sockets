@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"log"
 	"net"
 	"os"
@@ -14,6 +15,7 @@ func main() {
 	}
 	defer conn.Close()
 
+	go handleConnection(conn)
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for scanner.Scan() {
@@ -24,4 +26,11 @@ func main() {
 		}
 	}
 	os.Stdin.Close()
+}
+
+func handleConnection(conn net.Conn) {
+	scanner := bufio.NewScanner(conn)
+	for scanner.Scan() {
+		fmt.Println(scanner.Text())
+	}
 }
