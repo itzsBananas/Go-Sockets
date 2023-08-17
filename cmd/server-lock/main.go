@@ -60,6 +60,7 @@ func handleConnection(conn net.Conn) {
 }
 
 func broadcast(src net.Conn, message string) {
+	log.Println(message)
 	for conn := range users {
 		if src != conn {
 			go sendMessage(conn, []byte(message))
