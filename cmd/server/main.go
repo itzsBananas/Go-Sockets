@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"log"
 	"net"
@@ -15,8 +16,11 @@ type message struct {
 var chat = make(chan message)
 var enter, leave = make(chan net.Conn), make(chan net.Conn)
 
+var port = flag.Int("p", 8080, "server port number")
+
 func main() {
-	ln, err := net.Listen("tcp", ":8080")
+	flag.Parse()
+	ln, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
 	if err != nil {
 		log.Fatalf("Server cannot initialize: %s", err)
 	}

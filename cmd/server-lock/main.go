@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"log"
 	"net"
@@ -13,8 +14,11 @@ var (
 	mu    sync.RWMutex
 )
 
+var port = flag.Int("p", 8080, "client port number")
+
 func main() {
-	ln, err := net.Listen("tcp", ":8080")
+	flag.Parse()
+	ln, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
 	if err != nil {
 		log.Fatalf("Server cannot initialize: %s", err)
 	}

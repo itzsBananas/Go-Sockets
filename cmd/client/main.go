@@ -2,14 +2,18 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"log"
 	"net"
 	"os"
 )
 
+var port = flag.Int("p", 8080, "client port number")
+
 func main() {
-	conn, err := net.Dial("tcp", ":8080")
+	flag.Parse()
+	conn, err := net.Dial("tcp", fmt.Sprintf(":%d", *port))
 	if err != nil {
 		log.Fatalf("Client cannot initialize: %s", err)
 	}
