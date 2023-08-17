@@ -33,7 +33,7 @@ func main() {
 			log.Println(msg.data)
 			for conn := range users {
 				if msg.src != conn {
-					go sendMessage(conn, []byte(msg.data))
+					sendMessage(conn, []byte(msg.data))
 				}
 			}
 		}
